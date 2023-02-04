@@ -162,6 +162,60 @@ INSERT INTO nisan_satislar VALUES (20, 'Ayse', 'Toyota');
 INSERT INTO nisan_satislar VALUES (50, 'Yasar', 'Volvo');
 INSERT INTO nisan_satislar VALUES (20, 'Mine', 'Toyota');
 
+-- SORU 1) Her iki ayda da aynı id ile satılan ürünlerin urun_id’lerini
+-- ve ürünleri Mart ayında alanların isimlerini getiren bir query yazınız.
+SELECT musteri_isim
+FROM mart_satislar
+WHERE EXISTS (SELECT urun_id
+FROM nisan_satislar
+WHERE mart_satislar.urun_id = nisan_satislar.urun_id);
+
+-- SORU 2) Her iki ayda da satılan urun_isimleri aynı
+-- ürünlerin urun_isim’ini ve ürünleri Nisan ayında alanların
+-- isimlerini getiren bir query yazınız
+SELECT urun_isim, musteri_isim
+FROM nisan_satislar
+WHERE EXISTS (SELECT urun_isim
+FROM mart_satislar
+WHERE mart_satislar.urun_isim =
+nisan_satislar.urun_isim);
+
+SELECT musteri_isim
+FROM nisan_satislar
+WHERE NOT EXISTS (SELECT urun_isim
+FROM mart_satislar
+WHERE mart_satislar.urun_isim =
+nisan_satislar.urun_isim);
+
+
+-- IS NULL Condition --
+-- Arama yapılan field’da NULL değeri almış kayıtları getirir.
+
+CREATE TABLE insanlar
+(
+ssn char(9),
+isim varchar(50),
+adres varchar(50)
+);
+
+INSERT INTO insanlar VALUES(123456789, 'Ali Can', 'Istanbul');
+INSERT INTO insanlar VALUES(234567890, 'Veli Cem', 'Ankara');
+INSERT INTO insanlar VALUES(345678901, 'Mine Bulut', 'Izmir');
+INSERT INTO insanlar (ssn, adres) VALUES(456789012, 'Bursa');
+INSERT INTO insanlar (ssn, adres) VALUES(567890123, 'Denizli');
+
+SELECT *
+FROM insanlar
+WHERE isim IS NULL;
+
+SELECT *
+FROM insanlar
+WHERE isim IS NOT NULL;
+
+UPDATE insanlar
+SET isim = 'Isim Girilmemis'
+WHERE name IS NULL;
+
 
 
 
